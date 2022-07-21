@@ -1,41 +1,56 @@
 import sys
 from collections import deque
 
-def bfs():
-    queue = deque()
-    
+def check(x, y):
+    cnt = 0
+
+    for i in range(4):
+        nx = x + dx[i]
+        ny = y + dy[i]
+
+        if 0 <= nx < H and 0 <= ny < W and maps[nx][ny] == '#':
+            start = directions[i]
+            cnt += 1
+
+    if cnt > 1:
+        return False
+
+    return start
+
+
+def bfs(i, j):
+    queue = deque([[i,j]])
+    visited[i][j] = True
+
     while queue:
         x, y = queue.popleft()
         
         for i in range(4):
             nx = x + dx[i]
             ny = y + dy[i]
+            direction = directions[i]
             
             if 0 <= nx < H and 0 <= ny < W:
-                pass
+                if maps[nx][ny] == '#' and visited[nx][ny] == False:
+                    visited[nx][ny] = True
+                    arr.append(direction)
+                    queue.append([nx,ny])
+                    
+
+    return arr
 
 H, W = map(int, sys.stdin.readline().split())
 maps = [list(sys.stdin.readline().rstrip()) for _ in range(H)]
+visited = [[False] * W for _ in range(H)]
+dx = [-1,0,1,0]
+dy = [0,1,0,-1]
+directions = ['^','>','v','<']
+ans = []
 
-dx = [-1,1,0,0]
-dy = [0,0,-1,1]
-directions = ['<','>','v','^']
-
-for row in range(H):
-    if maps[row].count('#') % 2 == 1 and maps[row].count('#') >= 3:
-        
-        for col in range(W):
-            if maps[row][col] == '#':
-                cnt = 0
-                
-                for i in range(4):
-                    nx = row + dx[i]
-                    ny = col + dy[i]
-                    
-                    if 0 <= nx < H and 0 <= ny < W and maps[nx][ny] == '#':
-                        direction = directions[i]
-                        cnt += 1
-                
-                if cnt == 1:
-                    bfs()
-                        
+for row in range(H):       
+    for col in range(W):
+        if maps[row][col] == '#' and check(row, col):
+            arr = deque([])
+            path = bfs(row, col)
+            print(*path)
+            sys.exit(0)
