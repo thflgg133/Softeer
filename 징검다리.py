@@ -2,6 +2,7 @@ import sys
 
 N = int(sys.stdin.readline())
 stone_height = list(map(int, sys.stdin.readline().split()))
+
 # Dynamic Programming 이용
 dp = [1] * N
 
