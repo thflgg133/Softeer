@@ -19,6 +19,7 @@ def check(x, y):
 
 
 def bfs(i, j):
+    path = deque([])
     queue = deque([[i,j]])
     visited[i][j] = True
 
@@ -33,11 +34,11 @@ def bfs(i, j):
             if 0 <= nx < H and 0 <= ny < W:
                 if maps[nx][ny] == '#' and visited[nx][ny] == False:
                     visited[nx][ny] = True
-                    arr.append(direction)
+                    path.append(direction)
                     queue.append([nx,ny])
                     
 
-    return arr
+    return path
 
 
 H, W = map(int, sys.stdin.readline().split())
@@ -45,13 +46,12 @@ maps = [list(sys.stdin.readline().rstrip()) for _ in range(H)]
 visited = [[False] * W for _ in range(H)]
 dx = [-1,0,1,0]
 dy = [0,1,0,-1]
-directions = deque(['^','>','v','<'])
+directions = ['^','>','v','<']
 ans = []
 
 for row in range(H):       
     for col in range(W):
         if maps[row][col] == '#' and check(row, col):
-            arr = deque([])
             path = bfs(row, col)
             print(row+1, col+1)
             print(path[0])
@@ -69,58 +69,15 @@ for row in range(H):
                         cnt = 0
                         
                 else:
-                    # 상
-                    if current == "^" and next == ">":
-                        ans.append("R")
-                        current = next
-                        cnt = 1
-                        continue
-                        
-                    if current == "^" and next == "<":
+                    if directions[directions.index(current) - 1] == next:
                         ans.append("L")
-                        current = next
-                        cnt = 1
-                        continue
-
-                    # 좌
-                    if current == ">" and next == "v":
+                            
+                    else:
                         ans.append("R")
-                        current = next
-                        cnt = 1
-                        continue
                     
-                    if current == ">" and next == "^":
-                        ans.append("L")
-                        current = next
-                        cnt = 1
-                        continue
+                    current = next
+                    cnt = 1
                     
-                    # 하
-                    if current == "v" and next == "<":
-                        ans.append("R")
-                        current = next
-                        cnt = 1
-                        continue
-                    
-                    if current == "v" and next == ">":
-                        ans.append("L")
-                        current = next
-                        cnt = 1
-                        continue
-                    
-                    # 우
-                    if current == "<" and next == "^":
-                        ans.append("R")
-                        current = next
-                        cnt = 1
-                        continue
-                    
-                    if current == "<" and next == "v":
-                        ans.append("L")
-                        current = next
-                        cnt = 1
-                        continue
-            
             for i in ans:
                 print(i, end="")  
                     
