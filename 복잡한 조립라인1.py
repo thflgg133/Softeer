@@ -15,6 +15,7 @@ for i in range(N-1):
             if j == k:
                 continue
 
+            # 각 작업장 사이를 이동하는 시간들을 전부 할당
             travel_time[i][j][k] = line[K + cnt]
             cnt += 1
 
@@ -28,6 +29,7 @@ for i in range(N-1):
             if j == k: # 같은 라인으로 이동할때는 이동 시간이 안걸리므로 패스
                 continue
             
+            # min(같은 라인으로 이동, 다른 작업장으로 이동하는 시간 + 작업 시간)
             tmp = min(tmp, dp[i][k] + travel_time[i][k][j])
         
         dp[i+1][j] += tmp
