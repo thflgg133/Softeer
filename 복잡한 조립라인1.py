@@ -30,7 +30,8 @@ for i in range(N-1):
                 continue
             
             # min(같은 라인으로 이동, 다른 작업장으로 이동하는 시간 + 작업 시간)
-            tmp = min(tmp, dp[i][k] + travel_time[i][k][j])
+            # 19번째 줄과 다르게 반대로 넣어줘야 함
+            tmp = min(tmp, dp[i][k] + travel_time[i][k][j]) 
         
         dp[i+1][j] += tmp
 
